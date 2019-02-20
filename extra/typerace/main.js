@@ -62,8 +62,7 @@ button.onclick = function() {
 
 let perfect = false;
 
-
-function changeFunction(value) {
+inputElem.addEventListener('input', function() {
   let str = words.slice(state.wordId + 1, words.length).join(' ');
 
   textElem.innerText = str;
@@ -79,19 +78,19 @@ function changeFunction(value) {
   let error = false;
 
   letters.forEach((item, i, arr) => {
-    if (item === value[i] && (!error)) {
+    if (item === this.value[i] && (!error)) {
       A += item;
     } else {
       error = true;
-      if (value[i] === undefined) { C += item; } else { B += item; }
+      if (this.value[i] === undefined) { C += item; } else { B += item; }
     }
   });
   typedTextElem.innerText = words.slice(0, state.wordId).join(' ') + ' ' + A;
   mistakeElem.innerText = B;
   textElem.innerText = C + ' ' + str;
   if (mistakeElem.innerText === '') { inputElem.style.background = 'white'; } else { inputElem.style.background = 'red'; }
-  if (value === words[state.wordId]) { perfect = true; }
-}
+  if (this.value === words[state.wordId]) { perfect = true; }
+});
 
 inputElem.addEventListener('keyup', function(e) {
   if (e.key === ' ' && perfect) {
