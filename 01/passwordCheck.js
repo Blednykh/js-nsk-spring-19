@@ -29,6 +29,9 @@ export function passwordCheck(password) {
   if (password.match(re) !== null) {
     if (password.match(re).length < 2) { result = false; }
   }
-  if (password.search(/\!/) === -1 && password.search(/\?/) === -1 && password.search(/\./) === -1 && password.search(/\,/) === -1 && password.search(/\+/) === -1 && password.search(/\-/) === -1 && password.search(/\*/) === -1 && password.search(/\//) === -1 && password.search(/\=/) === -1) { result = false; }
+
+  re = /[!?.,+*/=-]/;
+  if (password.match(re) === null) { result = false; }
+
   return result;
 }

@@ -60,8 +60,8 @@ button.onclick = function() {
  * отобразить текст на странице
  */
 
-
 let perfect = false;
+
 
 function changeFunction(value) {
   let str = words.slice(state.wordId + 1, words.length).join(' ');
@@ -93,7 +93,6 @@ function changeFunction(value) {
   if (value === words[state.wordId]) { perfect = true; }
 }
 
-
 inputElem.addEventListener('keyup', function(e) {
   if (e.key === ' ' && perfect) {
     state.wordId++;
@@ -101,6 +100,7 @@ inputElem.addEventListener('keyup', function(e) {
     perfect = false;
   }
 });
+
 
 /**
  * добавить обработкич нажания на клавиши и сравнивать введенный текст пользователем с сохраненным ранее
