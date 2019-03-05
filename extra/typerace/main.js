@@ -10,6 +10,8 @@ const textElem = document.getElementById('textElem');
 const inputElem = document.getElementById('inputElem');
 const timerElem = document.getElementById('timerElem');
 const cpsElem = document.getElementById('cpsElem');
+const timerBox = document.getElementById('timerBox');
+
 
 inputElem.style.display = 'none';
 typedTextElem.style.color = 'green';
@@ -22,23 +24,78 @@ cpsElem.innerText = 'Your CPS: ';
  */
 const state = {
   text: '',
-  wordId: 0
+  wordId: 0,
+  lives: 0
 };
 
-let words;
 
-button.onclick = function() {
-  state.text = 'Унас было 2 мешка травы, 75 таблеток мескалина,'
-    + ' 5 марок мощнейшей кислоты, полсолонки кокаина и гора возбудителей,'
-    + ' успокоительных и всего такого, всех цветов, а ещё 1 литр текилы, 1 литр рома, ящик пива, 0.5 литра эфира и 24 амила.';
+// let elem = document.getElementById("liveImg3");
+// document.getElementById("liveBar").removeChild(elem);
+
+function setText(text) {
+  state.text = text;
+  textElem.innerText = state.text;
+  words = state.text.split(' ');
+  for (let i = state.lives + 1; i <= 3; i++) {
+    const elem = document.createElement('img');
+
+    elem.setAttribute('src', './hurt.png');
+    elem.setAttribute('height', '40');
+    elem.setAttribute('width', '40');
+    elem.setAttribute('alt', 'Live' + i);
+    elem.setAttribute('id', 'liveImg' + i);
+    document.getElementById('liveBar').appendChild(elem);
+  }
+  state.lives = 3;
+}
+
+function setRandomText() {
+  // const XHR = ('onload' in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
+  // const xhr = new XHR();
+  const type = 'sentence';
+  const number = 2;
+  const params = '&type=' + type + '&number=' + number;
+  // xhr.open('GET', 'https://fish-text.ru/get?' + params, false);
+  // xhr.onload = function() {
+  //   const result = JSON.parse(this.responseText);
+  //
+  //   if (result.status === 'success') {
+  //     setText(result.text);
+  //   } else {
+  //     console.log(result.errorCode + '\n' + result.text);
+  //   }
+  // };
+  // xhr.onerror = function () {
+  //   alert('Ошибка ' + this.status);
+  // };
+  // xhr.send();
+
+  fetch('https://fish-text.ru/get?' + params)
+    .then(response => response.json())
+    .then(json => setText(json.text));
+  console.log(4);
+}
+
+function start() {
+  inputElem.value = '';
+  cpsElem.innerText = 'Your CPS: ';
+  mistakeElem.innerText = '';
+  typedTextElem.innerText = '';
+  state.wordId = 0;
+  setRandomText();
+  timerBox.style.display = 'inherit';
+  timerElem.style.color = 'black';
+  timerElem.style.fontSize = '18px';
   timerElem.innerText = 60;
   button.style.display = 'none';
   inputElem.style.display = 'inherit';
   inputElem.style.background = 'white';
   let time = 60;
   const timerId = setInterval(function() {
-    time -= 1;
+    time--;
     timerElem.innerText = time;
+    timerElem.style.color = (time <= 10) ? 'red' : 'black';
+    if (time <= 3) { timerElem.style.fontSize = '' + ((4 - time) * 2 + 18) + 'px'; }
     let lettersCount = typedTextElem.innerText.split(' ').slice(0, state.wordId).join('').length;
 
     if ((time % 3) === 0) {
@@ -50,11 +107,17 @@ button.onclick = function() {
 
   setTimeout(function() {
     clearInterval(timerId);
-    timerElem.innerText = 'stop';
+    timerElem.innerText = '0';
+    if (confirm('Время вышло! Попробовать ещё раз?')) { start(); }
   }, 60000);
+  // textElem.innerText = state.text;
+  // words = state.text.split(' ');
+}
 
-  textElem.innerText = state.text;
-  words = state.text.split(' ');
+let words;
+
+button.onclick = function() {
+  start();
 };
 /**
  * отобразить текст на странице
@@ -77,6 +140,7 @@ inputElem.addEventListener('input', function() {
 
   let error = false;
 
+
   letters.forEach((item, i, arr) => {
     if (item === this.value[i] && (!error)) {
       A += item;
@@ -88,7 +152,11 @@ inputElem.addEventListener('input', function() {
   typedTextElem.innerText = words.slice(0, state.wordId).join(' ') + ' ' + A;
   mistakeElem.innerText = B;
   textElem.innerText = C + ' ' + str;
-  if (mistakeElem.innerText === '') { inputElem.style.background = 'white'; } else { inputElem.style.background = 'red'; }
+  if (mistakeElem.innerText === '') { inputElem.style.background = 'white'; } else {
+    inputElem.style.background = 'red'; let elem = document.getElementById('liveImg' + state.lives);
+
+    document.getElementById('liveBar').removeChild(elem); state.lives--;
+}
   if (this.value === words[state.wordId]) { perfect = true; }
 });
 
