@@ -34,6 +34,7 @@ const state = {
 
 function setText(text) {
   state.text = text;
+  //  state.text = 'мама мыла раму';
   textElem.innerText = state.text;
   words = state.text.split(' ');
   for (let i = state.lives + 1; i <= 3; i++) {
@@ -73,7 +74,6 @@ function setRandomText() {
   fetch('https://fish-text.ru/get?' + params)
     .then(response => response.json())
     .then(json => setText(json.text));
-  console.log(4);
 }
 
 function start() {
@@ -103,8 +103,19 @@ function start() {
 
       cpsElem.innerText = 'Your CPS: ' + lps.toFixed(2);
     }
-  }, 1000);
-
+    if (state.lives === 0) {
+      clearTimeout(timerId);
+      if (confirm('Слишком много ошибок! Попробовать ещё раз?')) { start(); }
+    }
+    if(state.wordId === words.length){
+      clearTimeout(timerId);
+      if (confirm(`Успешно!\n
+       Ваша скорость: столькото символов в секунду \n 
+       Количество слов в тексте: ${words.length}\n 
+       Количество жизней: ${state.lives}\n
+       Попробовать улучшить результат?`)) { start(); }
+    }
+  }, 1000, state);
   setTimeout(function() {
     clearInterval(timerId);
     timerElem.innerText = '0';
