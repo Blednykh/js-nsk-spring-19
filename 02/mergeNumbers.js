@@ -12,4 +12,14 @@
  * @param number
  */
 export function mergeNumbers(number) {
+  if (number < 10) {
+    return number;
+  }
+
+  const result = mergeNumbers(number
+    .toString()
+    .split('')
+    .reduce((sum, current) => sum + (+current), 0));
+
+  return result;
 }

@@ -12,4 +12,8 @@
  * @return {Set<any>} массив уникальных значений, отсортированный по возрастанию
  */
 export function getUnique(input) {
+  const obj = {};
+
+  input.forEach(item => { obj[item] = true; });
+  return Object.keys(obj).map(item => (+item));
 }

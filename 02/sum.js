@@ -12,4 +12,16 @@
  * @returns а это уже сами решите
  */
 export function sum(x) {
+  let result = x;
+
+  if (result === undefined) {
+    return 0;
+  }
+  return function recSum(y) {
+    if (y === undefined) {
+      return result;
+    }
+    result += y;
+    return recSum;
+  };
 }

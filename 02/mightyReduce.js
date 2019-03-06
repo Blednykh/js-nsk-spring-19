@@ -12,6 +12,10 @@
  * @param {*[]}      input массив значений
  */
 export function reduceMap(fn, input) {
+  return input.reduce((arr, current) => {
+    arr.push(fn(current));
+    return arr;
+  }, []);
 }
 
 /**
@@ -25,4 +29,8 @@ export function reduceMap(fn, input) {
  * @param {*[]}      input массив значений
  */
 export function reduceFilter(fn, input) {
+  return input.reduce((arr, current) => {
+    if (fn(current)) { arr.push(current); }
+    return arr;
+  }, []);
 }
