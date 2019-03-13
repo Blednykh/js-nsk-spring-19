@@ -7,12 +7,23 @@
 </head>
 <body>
 <div id="content">
+  <div id = "liveBar"></div>
+  <div id = "nameBox">Имя игрока:</div>
+  <input type="text" id="inputUser">
   <button id="buttonStart">Старт</button>
   <div id="text">
     <span id="typedTextElem"></span><span id="mistakeElem"></span><span id="textElem"></span>
   </div>
   <input type="text" id="inputElem">
-  <span id="timerElem"></span>
+  <div id = "timerBox">
+    <div id = "timerContent">
+      <span id="timerElem"></span>
+      <img id="stopwatch" src="stopwatch.png">
+    </div>
+  </div>
+  <div>
+    <table id = "recordsTable" title="Таблица рекордов:"></table>
+  </div>
   <span id="cpsElem"></span>
   <script src="./main.js"></script>
 </div>
